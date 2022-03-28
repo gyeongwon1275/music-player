@@ -1,3 +1,5 @@
+import { createBrowserHistory } from './utils/history';
+
 type Route = {
   url: string;
   element: HTMLElement;
@@ -28,10 +30,7 @@ class Routes {
       console.log('onpopstate', window.location.pathname);
     }; */
     const history = createBrowserHistory();
-    history.listen(({ action, location }) => {
-      console.log('action, location', action, location);
-      // The current location changed.
-    });
+    history.listen(({ location }) => {});
 
     setTimeout(() => {
       history.push('/test');
