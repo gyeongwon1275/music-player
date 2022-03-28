@@ -3,44 +3,34 @@ export function createBrowserHistory() {
 
   const listeners = createEvents();
 
-  function createEvents<F extends Function>() {
-    const handlers: F[] = [];
+  function createEvents() {
+    const handlers: Function[] = [];
 
     return {
-      call(arg) {
-        handlers.forEach((fn) => fn && fn(arg));
+      call(location: Location) {
+        handlers.forEach((fn) => fn && fn(location));
+      },
+      push(listener: Function) {
+        handlers.push(listener);
       },
     };
   }
 
-  function dispatchHistoryEvent() {
-    listeners.call({ location });
-  }
+  const callListeners = () => {
+    listeners.call(window.location);
+  };
 
-  function go(delta: number) {
-    globalHistory.go(delta);
-  }
-
-  let history = {
-    get action() {
-      return action;
+  return {
+    push(to: string) {
+      globalHistory.pushState(null, '', to);
+      callListeners();
     },
-    get location() {
-      return location;
+    replace(to: string) {
+      globalHistory.replaceState(null, '', to);
+      callListeners();
     },
-    createHref,
-    push,
-    replace,
-    go,
-    back() {
-      go(-1);
-    },
-    forward() {
-      go(1);
-    },
-    listen(listener) {
+    listen(listener: Function) {
       return listeners.push(listener);
     },
   };
-  return {};
 }
