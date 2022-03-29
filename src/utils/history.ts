@@ -34,3 +34,5 @@ export function createBrowserHistory() {
     },
   };
 }
+
+export type History = ReturnType<typeof createBrowserHistory>;
