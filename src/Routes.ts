@@ -1,4 +1,4 @@
-import { createBrowserHistory } from './utils/history';
+import { History } from './utils/history';
 
 type Route = {
   url: string;
@@ -8,33 +8,30 @@ type Route = {
 class Routes {
   private routeList: Route[];
 
-  constructor(routeList: Route[]) {
+  constructor(routeList: Route[], container: HTMLElement, history: History) {
     this.routeList = routeList;
-  }
+    this.render(container);
 
-  getRouteList() {
-    return this.routeList;
-  }
-
-  init() {
-    /*    window.onpopstate = () => {
-      const root = document.querySelector('#app') as HTMLDivElement;
-      root.innerHTML = '';
-
-      const { element } = this.getRouteList().find(
-        ({ url }) => url === window.location.pathname
-      ) as Route;
-
-      root.appendChild(element);
-
-      console.log('onpopstate', window.location.pathname);
-    }; */
-    const history = createBrowserHistory();
-    history.listen(({ location }) => {});
+    history.listen(() => {
+      this.render(container);
+    });
 
     setTimeout(() => {
-      history.push('/test');
-    }, 3000);
+      history.push('/test2');
+    }, 5000);
+  }
+
+  render(container: HTMLElement) {
+    const path = window.location.pathname;
+    const { element } = this.getRouteList().find(
+      ({ url }) => url === path
+    ) as Route;
+
+    container.firstChild?.remove();
+    container.appendChild(element);
+  }
+  getRouteList() {
+    return this.routeList;
   }
 }
 
