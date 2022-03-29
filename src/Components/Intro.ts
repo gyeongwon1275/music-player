@@ -8,7 +8,6 @@ if (!window.customElements.get('x-intro')) {
         super();
 
         this._time = Number(this.getAttribute('time'));
-        this.open = true;
       }
 
       get open() {
@@ -24,6 +23,7 @@ if (!window.customElements.get('x-intro')) {
       }
 
       connectedCallback() {
+        this.open = true;
         setTimeout(() => {
           this.open = false;
         }, this._time || 3000);
