@@ -1,27 +1,36 @@
-import '../src/Components';
-import Intro from './Pages/Intro';
-import Routes from './Routes';
-import { createBrowserHistory } from './utils/history';
-
-(function () {
-  const history = createBrowserHistory();
+import '../src/Components'
+import { BottomNavigation } from './Components'
+import Intro from './Pages/Intro'
+import Routes from './Routes'
+import { createBrowserHistory } from './utils/history'
+;(function () {
+  const history = createBrowserHistory()
 
   new Routes(
     [
       {
         url: '/',
-        element: new Intro().createElement(),
+        element: Intro({
+          onFinished: () => {
+            history.push('/playlist')
+          },
+        }),
       },
       {
-        url: '/test2',
-        element: document.createElement('span'),
+        url: '/playlist',
+        element: BottomNavigation({
+          onClick: (event) => {
+            const dataset = event.target?.dataset
+            history.push(dataset?.url)
+          },
+        }),
       },
       {
-        url: '/test3',
+        url: '/search',
         element: document.createElement('div'),
       },
     ],
     document.querySelector('#app') as HTMLElement,
     history
-  );
-})();
+  )
+})()

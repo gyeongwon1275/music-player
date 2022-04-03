@@ -1,38 +1,34 @@
-import { History } from './utils/history';
+import { History } from './utils/history'
 
 type Route = {
-  url: string;
-  element: HTMLElement;
-};
+  url: string
+  element: HTMLElement
+}
 
 class Routes {
-  private routeList: Route[];
+  private routeList: Route[]
 
   constructor(routeList: Route[], container: HTMLElement, history: History) {
-    this.routeList = routeList;
-    this.render(container);
+    this.routeList = routeList
+    this.render(container)
 
     history.listen(() => {
-      this.render(container);
-    });
-
-    setTimeout(() => {
-      history.push('/test2');
-    }, 5000);
+      this.render(container)
+    })
   }
 
   render(container: HTMLElement) {
-    const path = window.location.pathname;
+    const path = window.location.pathname
     const { element } = this.getRouteList().find(
       ({ url }) => url === path
-    ) as Route;
+    ) as Route
 
-    container.firstChild?.remove();
-    container.appendChild(element);
+    container.firstChild?.remove()
+    container.appendChild(element)
   }
   getRouteList() {
-    return this.routeList;
+    return this.routeList
   }
 }
 
-export default Routes;
+export default Routes
